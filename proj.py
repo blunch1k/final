@@ -177,7 +177,6 @@ def process_video():
     future_dict = defaultdict (lambda:[])
     x_box = []
     y_box = []
-    warn_list = []
     crs_list = []
 
 
@@ -190,13 +189,12 @@ def process_video():
         # Обработка кадра с моделью YOLO
         results = model(frame)
         if results[0].boxes is not None and results[0].boxes.id is not None :
-        # Получение координат боксов и идентификаторов треков
+            # Получение координат боксов и идентификаторов треков
             boxes = results[0].boxes.xywh.cpu()  # получение координат боксов
             track_ids = results[0].boxes.id.int().cpu().tolist()  # получение айдишников
 
             annotated_frame = results[0].plot()
-
-            
+ 
             for box, track_id in zip(boxes, track_ids):
                 x, y, w, h = box  # координаты центра и размеры бокса
                 x_box.append(int(box[0]))
@@ -221,36 +219,36 @@ def process_video():
 
                     cv2.circle(annotated_frame, (int(future_x), int(future_y)), 5, (0, 255, 0), -1)
                     cv2.putText(annotated_frame, 'Predicted', (int(future_x), int(future_y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                if len(track_ids)==2:
-                    #WARNINGS
-                    x1_l = round(float(boxes[0][0]))
-                    x2_l = round(float(boxes[1][0]))
-                    y1_l = round(float(boxes[0][1]))
-                    y2_l = round(float(boxes[1][1]))
-                    x1_fut = round(float(future_dict[1][0][0]))
-                    x2_fut = round(float(future_dict[2][0][0]))
-                    y1_fut = round(float(future_dict[1][0][1]))
-                    y2_fut = round(float(future_dict[2][0][1]))
-                    last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut)  
-                    
-                    #CRASHES
-                    w_x1 = round(float(boxes[0][2]))/2
-                    w_x2 = round(float(boxes[1][2]))/2
-                    h_y1 = round(float(boxes[0][3]))/2
-                    h_y2 = round(float(boxes[1][3]))/2
-                    # x1_crs = 
-                    # x2_crs = 
-                    # y1_crs = 
-                    # y2_crs = 
-                    if len(list(set([x for x in range(round(float(boxes[0][0])-w_x1),round(float(boxes[0][0])+w_x1))])&set([x for x in range(round(float(boxes[1][0])-w_x2),round(float(boxes[1][0])+w_x2))])))>0 and len(list(set([y for y in range(round(float(boxes[0][1])-h_y1),round(float(boxes[0][1])+h_y1))])&set([y for y in range(round(float(boxes[1][1])-h_y2),round(float(boxes[1][1])+h_y2))])))>0:
-                        crs_list.append(1)
-                    else:
-                        crs_list.append(0)
-                    if len(crs_list)>2:
-                        crs_list.pop(0)
-                    if crs_list[0]==1 and crs_list[1]==0:
-                        collisions+=1
-                else:continue
+            if len(track_ids)==2:
+                #WARNINGS
+                x1_l = round(float(boxes[0][0]))
+                x2_l = round(float(boxes[1][0]))
+                y1_l = round(float(boxes[0][1]))
+                y2_l = round(float(boxes[1][1]))
+                x1_fut = round(float(future_dict[1][0][0]))
+                x2_fut = round(float(future_dict[2][0][0]))
+                y1_fut = round(float(future_dict[1][0][1]))
+                y2_fut = round(float(future_dict[2][0][1]))
+                last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut)  
+                
+                #CRASHES
+                w_x1 = round(float(boxes[0][2]))/2
+                w_x2 = round(float(boxes[1][2]))/2
+                h_y1 = round(float(boxes[0][3]))/2
+                h_y2 = round(float(boxes[1][3]))/2
+                # x1_crs = 
+                # x2_crs = 
+                # y1_crs = 
+                # y2_crs = 
+                if len(list(set([x for x in range(round(float(boxes[0][0])-w_x1),round(float(boxes[0][0])+w_x1))])&set([x for x in range(round(float(boxes[1][0])-w_x2),round(float(boxes[1][0])+w_x2))])))>0 and len(list(set([y for y in range(round(float(boxes[0][1])-h_y1),round(float(boxes[0][1])+h_y1))])&set([y for y in range(round(float(boxes[1][1])-h_y2),round(float(boxes[1][1])+h_y2))])))>0:
+                    crs_list.append(1)
+                else:
+                    crs_list.append(0)
+                if len(crs_list)>2:
+                    crs_list.pop(0)
+                if crs_list[0]==1 and crs_list[1]==0:
+                    collisions+=1
+            else:continue
 
 
             if annotated_frame is not None:
