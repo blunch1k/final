@@ -13,7 +13,6 @@ model = YOLO("best.pt")
 # Переменные для отслеживания предупреждений и столкновений
 warnings = 0
 collisions = 0
-current_frame = None
 warn_list = []
 
 #функцияя предугадывания траектории
@@ -38,7 +37,7 @@ def predict_position(track, future_time, fps):
 
 
 def last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut):
-    global warn_list
+    global warnings
     if x1_l<x1_fut:
         if y1_l<y1_fut:
             if x2_l <x2_fut:
@@ -150,9 +149,13 @@ def last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut):
                                 warn_list.append(1)
                         else:
                             warn_list.append(0)
+    if len(warn_list)>2:
+         warn_list.pop(0)
+    if warn_list[0]==1 and warn_list[1]==0:
+        warnings+=1
 
 def process_video():
-    global warnings,collisions,current_frame
+    global warnings,collisions
     
     # Открытие видео
     cap = cv2.VideoCapture("best_video.mp4")
@@ -218,39 +221,36 @@ def process_video():
 
                     cv2.circle(annotated_frame, (int(future_x), int(future_y)), 5, (0, 255, 0), -1)
                     cv2.putText(annotated_frame, 'Predicted', (int(future_x), int(future_y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            if len(track_ids)==2:
-                #WARNINGS
-                x1_l = round(float(boxes[0][0]))
-                x2_l = round(float(boxes[1][0]))
-                y1_l = round(float(boxes[0][1]))
-                y2_l = round(float(boxes[1][1]))
-                x1_fut = round(float(future_dict[1][0][0]))
-                x2_fut = round(float(future_dict[2][0][0]))
-                y1_fut = round(float(future_dict[1][0][1]))
-                y2_fut = round(float(future_dict[2][0][1]))
-                last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut)  
-                if len(warn_list)>2:
-                    warn_list.pop(0)
-                if warn_list[0]==1 and warn_list[1]==0:
-                    warnings+=1
-                #CRASHES
-                w_x1 = round(float(boxes[0][2]))/2
-                w_x2 = round(float(boxes[1][2]))/2
-                h_y1 = round(float(boxes[0][3]))/2
-                h_y2 = round(float(boxes[1][3]))/2
-                # x1_crs = 
-                # x2_crs = 
-                # y1_crs = 
-                # y2_crs = 
-                if len(list(set([x for x in range(round(float(boxes[0][0])-w_x1),round(float(boxes[0][0])+w_x1))])&set([x for x in range(round(float(boxes[1][0])-w_x2),round(float(boxes[1][0])+w_x2))])))>0 and len(list(set([y for y in range(round(float(boxes[0][1])-h_y1),round(float(boxes[0][1])+h_y1))])&set([y for y in range(round(float(boxes[1][1])-h_y2),round(float(boxes[1][1])+h_y2))])))>0:
-                    crs_list.append(1)
-                else:
-                    crs_list.append(0)
-                if len(crs_list)>2:
-                    crs_list.pop(0)
-                if crs_list[0]==1 and crs_list[1]==0:
-                    collisions+=1
-            else:continue
+                if len(track_ids)==2:
+                    #WARNINGS
+                    x1_l = round(float(boxes[0][0]))
+                    x2_l = round(float(boxes[1][0]))
+                    y1_l = round(float(boxes[0][1]))
+                    y2_l = round(float(boxes[1][1]))
+                    x1_fut = round(float(future_dict[1][0][0]))
+                    x2_fut = round(float(future_dict[2][0][0]))
+                    y1_fut = round(float(future_dict[1][0][1]))
+                    y2_fut = round(float(future_dict[2][0][1]))
+                    last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut)  
+                    
+                    #CRASHES
+                    w_x1 = round(float(boxes[0][2]))/2
+                    w_x2 = round(float(boxes[1][2]))/2
+                    h_y1 = round(float(boxes[0][3]))/2
+                    h_y2 = round(float(boxes[1][3]))/2
+                    # x1_crs = 
+                    # x2_crs = 
+                    # y1_crs = 
+                    # y2_crs = 
+                    if len(list(set([x for x in range(round(float(boxes[0][0])-w_x1),round(float(boxes[0][0])+w_x1))])&set([x for x in range(round(float(boxes[1][0])-w_x2),round(float(boxes[1][0])+w_x2))])))>0 and len(list(set([y for y in range(round(float(boxes[0][1])-h_y1),round(float(boxes[0][1])+h_y1))])&set([y for y in range(round(float(boxes[1][1])-h_y2),round(float(boxes[1][1])+h_y2))])))>0:
+                        crs_list.append(1)
+                    else:
+                        crs_list.append(0)
+                    if len(crs_list)>2:
+                        crs_list.pop(0)
+                    if crs_list[0]==1 and crs_list[1]==0:
+                        collisions+=1
+                else:continue
 
 
             if annotated_frame is not None:
@@ -258,12 +258,10 @@ def process_video():
                 out.write(annotated_frame)
                 cv2.imshow("YOLOv11 Tracking", annotated_frame)
                 update_interface()
-                current_frame = annotated_frame.copy()
             else:
                 out.write(frame)# Запись кадра в выходное видео
                 cv2.imshow("YOLOv11 Tracking", frame)
                 update_interface()
-                current_frame = annotated_frame.copy()
                 
                 
                 
@@ -279,18 +277,8 @@ def process_video():
     cv2.destroyAllWindows()
 
 def update_interface():
-    global current_frame
     warnings_label.config(text=f"Warnings: {warnings}")
     collisions_label.config(text=f"Collisions: {collisions}")
-    if current_frame is not None:
-        # Преобразование кадра OpenCV в формат, который может быть использован в Tkinter
-        img = cv2.cvtColor(current_frame, cv2.COLOR_BGR2RGB)  # Преобразуем BGR в RGB
-        img = Image.fromarray(img)  # Преобразуем в Image
-        img = ImageTk.PhotoImage(img)  # Преобразуем в PhotoImage
-
-        # Обновляем метку с изображением
-        image_label.config(image=img)
-        image_label.image = img  # Сохраняем ссылку на изображение
 
 # Создание основного окна приложения
 root = tk.Tk()
@@ -307,8 +295,6 @@ warnings_label.pack(pady=10)
 collisions_label = tk.Label(root, text=f"Collisions: {collisions}")
 collisions_label.pack(pady=10)
 
-image_label = tk.Label(root)
-image_label.pack(pady=10)
 
 # Запуск основного цикла приложения
 root.mainloop()
