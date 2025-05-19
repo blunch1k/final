@@ -258,12 +258,12 @@ def process_video():
                 out.write(annotated_frame)
                 cv2.imshow("YOLOv11 Tracking", annotated_frame)
                 update_interface()
-                current_frame = frame.copy()
+                current_frame = annotated_frame.copy()
             else:
                 out.write(frame)# Запись кадра в выходное видео
                 cv2.imshow("YOLOv11 Tracking", frame)
                 update_interface()
-                current_frame = frame.copy()
+                current_frame = annotated_frame.copy()
                 
                 
                 
