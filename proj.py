@@ -195,7 +195,7 @@ def process_video():
                 x, y, w, h = box  # координаты центра и размеры бокса
                 track = track_history[track_id]
                 track.append((float(x), float(y)))  # добавление координат в историю
-                if len(track) > 30:  # длина истории 30 кадров максимум
+                if len(track) > 15:  # длина истории 30 кадров максимум
                     track.pop(0)
                 points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
                 cv2.polylines(annotated_frame, [points], isClosed=False, color=(230, 230, 230), thickness=3)
