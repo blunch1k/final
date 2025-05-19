@@ -183,7 +183,7 @@ def process_video():
             break
         
         # Обработка кадра с моделью YOLO
-        results = model.track(frame)
+        results = model.track(frame,persist=True)
         if results[0].boxes is not None and results[0].boxes.id is not None :
             # Получение координат боксов и идентификаторов треков
             boxes = results[0].boxes.xywh.cpu()  # получение координат боксов
@@ -221,7 +221,117 @@ def process_video():
                 x2_fut = round(float(future_dict[2][0][0]))
                 y1_fut = round(float(future_dict[1][0][1]))
                 y2_fut = round(float(future_dict[2][0][1]))
-                last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut)
+                if x1_l<x1_fut:
+                    if y1_l<y1_fut:
+                        if x2_l <x2_fut:
+                            if y2_l < y2_fut:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
+                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
+                                        warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                            else:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
+                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
+                                        warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                        else:
+                            if y2_l < y2_fut:
+                                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
+                                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                            else:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
+                                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
+                                            warn_list.append(1)
+                                        else:
+                                            warn_list.append(0)
+                    else:
+                        if x2_l <x2_fut:
+                            if y2_l < y2_fut:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
+                                    if len(set([i for i in range(y1_l,y1_fut)]))&set([i for i in range(y2_l,y2_fut)]):
+                                        warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                            else:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
+                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
+                                        warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                        else:
+                            if y2_l < y2_fut:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
+                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
+                                        warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                            else:
+                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
+                                    if len(set([i for i in range(y1_l,y2_fut)])&set([i for i in range(y2_fut,y2_l)])):
+                                        warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                else:
+                    if x1_l<x1_fut:
+                        if y1_l<y1_fut:
+                            if x2_l <x2_fut:
+                                if y2_l < y2_fut:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
+                                        if len(set([i for i in range(y1_l,y1_fut)]&set([i for i in range(y2_l,y2_fut)]))):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                                else:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
+                                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                            else:
+                                if y2_l < y2_fut:
+                                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
+                                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
+                                                warn_list.append(1)
+                                            else:
+                                                warn_list.append(0)
+                                else:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
+                                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
+                                                warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                        else:
+                            if x2_l <x2_fut:
+                                if y2_l < y2_fut:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
+                                        if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_l,y2_fut)])):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                                else:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
+                                        if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_fut,y2_l)])):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                            else:
+                                if y2_l < y2_fut:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
+                                        if len(set([i for i in range(y1_l,y2_fut)])&set([i for i in range(y2_l,y2_fut)])):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
+                                else:
+                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
+                                        if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_fut,y2_l)])):
+                                            warn_list.append(1)
+                                    else:
+                                        warn_list.append(0)
                 if len(warn_list)>2:
                      warn_list.pop(0)
                 if len(warn_list)>1 and warn_list[0]==1 and warn_list[1]==0:
@@ -251,12 +361,10 @@ def process_video():
                 out.write(annotated_frame)
                 cv2.imshow("YOLOv11 Tracking", annotated_frame)
                 update_interface()
-                current_frame = annotated_frame.copy()
             else:
                 out.write(frame)# Запись кадра в выходное видео
                 cv2.imshow("YOLOv11 Tracking", frame)
                 update_interface()
-                current_frame = frame.copy()
                 
                 
                 
@@ -273,15 +381,6 @@ def update_interface():
     global current_frame
     warnings_label.config(text=f"Warnings: {warnings}")
     collisions_label.config(text=f"Collisions: {collisions}")
-    if current_frame is not None:
-        # Преобразование кадра OpenCV в формат, который может быть использован в Tkinter
-        img = cv2.cvtColor(current_frame, cv2.COLOR_BGR2RGB)  # Преобразуем BGR в RGB
-        img = Image.fromarray(img)  # Преобразуем в Image
-        img = ImageTk.PhotoImage(img)  # Преобразуем в PhotoImage
-
-        # Обновляем метку с изображением
-        image_label.config(image=img)
-        image_label.image = img  # Сохраняем ссылку на изображение
 
 # Создание основного окна приложения
 root = tk.Tk()
@@ -298,7 +397,5 @@ warnings_label.pack(pady=10)
 collisions_label = tk.Label(root, text=f"Collisions: {collisions}")
 collisions_label.pack(pady=10)
 
-image_label = tk.Label(root)
-image_label.pack(pady=10)
 # Запуск основного цикла приложения
 root.mainloop()
