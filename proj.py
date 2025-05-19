@@ -150,7 +150,6 @@ def last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut):
                                 warn_list.append(1)
                         else:
                             warn_list.append(0)
-    return warn_list
 
 def process_video():
     global warnings,collisions,current_frame
