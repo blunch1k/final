@@ -35,121 +35,25 @@ def predict_position(track, future_time, fps):
 
 warn_list = []
 current_frame=None
-def last_fut(x1_l,x2_l,y1_l,y2_l,x1_fut,x2_fut,y1_fut,y2_fut):
-    
-    global warnings,warn_list
-    if x1_l<x1_fut:
-        if y1_l<y1_fut:
-            if x2_l <x2_fut:
-                if y2_l < y2_fut:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                            warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                else:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                            warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-            else:
-                if y2_l < y2_fut:
-                        if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
-                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                else:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
-                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                warn_list.append(1)
-                            else:
-                                warn_list.append(0)
-        else:
-            if x2_l <x2_fut:
-                if y2_l < y2_fut:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                        if len(set([i for i in range(y1_l,y1_fut)]))&set([i for i in range(y2_l,y2_fut)]):
-                            warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                else:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                            warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-            else:
-                if y2_l < y2_fut:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
-                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                            warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                else:
-                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                        if len(set([i for i in range(y1_l,y2_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                            warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-    else:
-        if x1_l<x1_fut:
-            if y1_l<y1_fut:
-                if x2_l <x2_fut:
-                    if y2_l < y2_fut:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                            if len(set([i for i in range(y1_l,y1_fut)]&set([i for i in range(y2_l,y2_fut)]))):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                    else:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                else:
-                    if y2_l < y2_fut:
-                            if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
-                                if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                    warn_list.append(1)
-                                else:
-                                    warn_list.append(0)
-                    else:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
-                                if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                    warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-            else:
-                if x2_l <x2_fut:
-                    if y2_l < y2_fut:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                            if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_l,y2_fut)])):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                    else:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                            if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_fut,y2_l)])):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                else:
-                    if y2_l < y2_fut:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
-                            if len(set([i for i in range(y1_l,y2_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-                    else:
-                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                            if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_fut,y2_l)])):
-                                warn_list.append(1)
-                        else:
-                            warn_list.append(0)
-    
+
+
+class Rectangle:
+    def __init__(self,x,y,width,height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+def predict_collis(rect1,rect2):
+    i = rect2.y - rect2.height
+    a = rect2.x - rect2.width
+    for i in range(rect2.y-rect2.height,rect2.y+rect2.height):
+        y_coll = (rect1.y-rect1.height < i < rect2.y+rect2.height)
+        i+=2
+    for a in range(rect2.x-rect2.width,rect2.x+rect2.width):
+        x_coll = (rect1.x- rect1.width < rect2.x < rect1.x+rect1.width)
+        a+=2
+    return x_coll and y_coll
 
 def process_video():
     global warnings,collisions,current_frame
@@ -220,47 +124,28 @@ def process_video():
                 x2_fut = round(float(future_dict[2][0][0]))
                 y1_fut = round(float(future_dict[1][0][1]))
                 y2_fut = round(float(future_dict[2][0][1]))
-                if x1_l < x1_fut:
-                    xl_f_1 = [ i for i in range(x1_l,x1_fut+1)]
-                else:
-                    xl_f_1 = [ i for i in range(x1_fut,x1_l+1)]
-                if x2_l < x2_fut:
-                    xl_f_2 = [ i for i in range(x2_l,x2_fut+1)]
-                else:
-                    xl_f_2 = [ i for i in range(x2_fut,x2_l+1)]
-                if y1_l < y1_fut:
-                    yl_f_1 = [ i for i in range(y1_l,y1_fut+1)]
-                else:
-                    yl_f_1 = [ i for i in range(y1_fut,y1_l+1)]
-                if y2_l < y2_fut:
-                    yl_f_2 = [ i for i in range(y2_l,y2_fut+1)]
-                else:
-                    yl_f_2 = [ i for i in range(y2_fut,y2_l+1)]
-                if len(set(xl_f_1)&set(xl_f_2))> 0 and len(set(yl_f_1)&set(yl_f_2))>0:
+                w_x1 = round(float(boxes[0][2]))
+                w_x2 = round(float(boxes[1][2]))
+                h_y1 = round(float(boxes[0][3]))
+                h_y2 = round(float(boxes[1][3]))
+                rect1 = Rectangle(x1_fut,y1_fut,w_x1,h_y1)
+                rect2 = Rectangle(x2_fut,y2_fut,w_x2,h_y2)
+                if predict_collis(rect1,rect2):
                     warn_list.append(1)
                 else:
                     warn_list.append(0)
                 if len(warn_list)>2:
-                     warn_list.pop(0)
-                if len(warn_list)>1 and warn_list[0]==1 and warn_list[1]==0:
-                    warnings+=1  
-                
-                #CRASHES
-                w_x1 = round(float(boxes[0][2]))/2
-                w_x2 = round(float(boxes[1][2]))/2
-                h_y1 = round(float(boxes[0][3]))/2
-                h_y2 = round(float(boxes[1][3]))/2
-                # x1_crs = 
-                # x2_crs = 
-                # y1_crs = 
-                # y2_crs = 
+                    warn_list.pop(0)
+                if warn_list[0]==1 and warn_list[1]==0:
+                    warnings+=1
+
                 if len(list(set([x for x in range(round(float(boxes[0][0])-w_x1),round(float(boxes[0][0])+w_x1))])&set([x for x in range(round(float(boxes[1][0])-w_x2),round(float(boxes[1][0])+w_x2))])))>0 and len(list(set([y for y in range(round(float(boxes[0][1])-h_y1),round(float(boxes[0][1])+h_y1))])&set([y for y in range(round(float(boxes[1][1])-h_y2),round(float(boxes[1][1])+h_y2))])))>0:
                     crs_list.append(1)
                 else:
                     crs_list.append(0)
                 if len(crs_list)>2:
                     crs_list.pop(0)
-                if crs_list[0]==1 and crs_list[1]==0:
+                if len(crs_list)==2 and crs_list[0]==1 and crs_list[1]==0:
                     collisions+=1
 
 
@@ -278,7 +163,10 @@ def process_video():
                 
         
         if cv2.waitKey(1) == 27:
+            print(predict_collis)
             break #ESC чтобы перестало работать
+        if predict_collis == True: break
+            
     cap.release()
     out.release()
     cv2.destroyAllWindows()
