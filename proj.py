@@ -220,117 +220,26 @@ def process_video():
                 x2_fut = round(float(future_dict[2][0][0]))
                 y1_fut = round(float(future_dict[1][0][1]))
                 y2_fut = round(float(future_dict[2][0][1]))
-                if x1_l<x1_fut:
-                    if y1_l<y1_fut:
-                        if x2_l <x2_fut:
-                            if y2_l < y2_fut:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                        warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                            else:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                        warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                        else:
-                            if y2_l < y2_fut:
-                                    if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
-                                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                            else:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
-                                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                            warn_list.append(1)
-                                        else:
-                                            warn_list.append(0)
-                    else:
-                        if x2_l <x2_fut:
-                            if y2_l < y2_fut:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                                    if len(set([i for i in range(y1_l,y1_fut)]))&set([i for i in range(y2_l,y2_fut)]):
-                                        warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                            else:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                        warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                        else:
-                            if y2_l < y2_fut:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_fut,x2_l)])):
-                                    if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                        warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                            else:
-                                if len(set([i for i in range(x1_l,x1_fut)])&set([i for i in range(x2_l,x2_fut)])):
-                                    if len(set([i for i in range(y1_l,y2_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                        warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
+                if x1_l < x1_fut:
+                    xl_f_1 = [ i for i in range(x1_l,x1_fut+1)]
                 else:
-                    if x1_l<x1_fut:
-                        if y1_l<y1_fut:
-                            if x2_l <x2_fut:
-                                if y2_l < y2_fut:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                                        if len(set([i for i in range(y1_l,y1_fut)]&set([i for i in range(y2_l,y2_fut)]))):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                                else:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                                        if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                            else:
-                                if y2_l < y2_fut:
-                                        if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
-                                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                                warn_list.append(1)
-                                            else:
-                                                warn_list.append(0)
-                                else:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
-                                            if len(set([i for i in range(y1_l,y1_fut)])&set([i for i in range(y2_fut,y2_l)])):
-                                                warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                        else:
-                            if x2_l <x2_fut:
-                                if y2_l < y2_fut:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                                        if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_l,y2_fut)])):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                                else:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                                        if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_fut,y2_l)])):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                            else:
-                                if y2_l < y2_fut:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_fut,x2_l)])):
-                                        if len(set([i for i in range(y1_l,y2_fut)])&set([i for i in range(y2_l,y2_fut)])):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
-                                else:
-                                    if len(set([i for i in range(x1_fut,x1_l)])&set([i for i in range(x2_l,x2_fut)])):
-                                        if len(set([i for i in range(y1_fut,y1_l)])&set([i for i in range(y2_fut,y2_l)])):
-                                            warn_list.append(1)
-                                    else:
-                                        warn_list.append(0)
+                    xl_f_1 = [ i for i in range(x1_fut,x1_l+1)]
+                if x2_l < x2_fut:
+                    xl_f_2 = [ i for i in range(x2_l,x2_fut+1)]
+                else:
+                    xl_f_2 = [ i for i in range(x2_fut,x2_l+1)]
+                if y1_l < y1_fut:
+                    yl_f_1 = [ i for i in range(y1_l,y1_fut+1)]
+                else:
+                    yl_f_1 = [ i for i in range(y1_fut,y1_l+1)]
+                if y2_l < y2_fut:
+                    yl_f_2 = [ i for i in range(y2_l,y2_fut+1)]
+                else:
+                    yl_f_2 = [ i for i in range(y2_fut,y2_l+1)]
+                if len(set(xl_f_1)&set(xl_f_2))> 0 and len(set(yl_f_1)&set(yl_f_2))>0:
+                    warn_list.append(1)
+                else:
+                    warn_list.append(0)
                 if len(warn_list)>2:
                      warn_list.pop(0)
                 if len(warn_list)>1 and warn_list[0]==1 and warn_list[1]==0:
@@ -369,8 +278,6 @@ def process_video():
                 
         
         if cv2.waitKey(1) == 27:
-            print(track[2])
-            root.destroy()
             break #ESC чтобы перестало работать
     cap.release()
     out.release()
@@ -384,6 +291,7 @@ def update_interface():
 # Создание основного окна приложения
 root = tk.Tk()
 root.title("Collision Detection Interface")
+root.geometry('250x200')
 
 # Кнопка для начала обработки видео
 start_button = tk.Button(root, text="Start Processing", command=process_video)
