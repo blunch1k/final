@@ -4,7 +4,6 @@ from ultralytics import YOLO
 import tkinter as tk
 from tkinter import messagebox
 from collections import defaultdict
-from PIL import Image, ImageTk
 
 # Загрузка модели YOLO
 model = YOLO("best.pt")
