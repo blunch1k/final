@@ -36,7 +36,6 @@ def predict_position(track, future_time, fps):
 warn_list = []
 current_frame=None
 
-
 class Rectangle:
     def __init__(self,x,y,width,height):
         self.x = x
@@ -45,15 +44,16 @@ class Rectangle:
         self.height = height
 
 def predict_collis(rect1,rect2):
-    i = rect2.y - rect2.height
-    a = rect2.x - rect2.width
+    i = 0
+    a = 0
     for i in range(rect2.y-rect2.height,rect2.y+rect2.height):
-        y_coll = (rect1.y-rect1.height < i < rect2.y+rect2.height)
+        y_coll = (rect1.y-rect1.height < i) and (i < rect2.y+rect2.height)
         i+=2
+        return y_coll
     for a in range(rect2.x-rect2.width,rect2.x+rect2.width):
-        x_coll = (rect1.x- rect1.width < rect2.x < rect1.x+rect1.width)
+        x_coll = (rect1.x- rect1.width <a) and (a < rect1.x+rect1.width)
         a+=2
-    return x_coll and y_coll
+        return x_coll 
 
 def process_video():
     global warnings,collisions,current_frame
@@ -76,7 +76,7 @@ def process_video():
 
     track_history = defaultdict(lambda: [])
     future_dict = defaultdict (lambda:[])
-    crs_list = []
+    crs_list = [0,0]
 
 
     # Основной цикл обработки видео
@@ -139,13 +139,13 @@ def process_video():
                 if warn_list[0]==1 and warn_list[1]==0:
                     warnings+=1
 
-                if len(list(set([x for x in range(round(float(boxes[0][0])-w_x1),round(float(boxes[0][0])+w_x1))])&set([x for x in range(round(float(boxes[1][0])-w_x2),round(float(boxes[1][0])+w_x2))])))>0 and len(list(set([y for y in range(round(float(boxes[0][1])-h_y1),round(float(boxes[0][1])+h_y1))])&set([y for y in range(round(float(boxes[1][1])-h_y2),round(float(boxes[1][1])+h_y2))])))>0:
+                if len(list(set([x for x in range(x1_l-w_x1,x1_l+w_x1)])&set([x for x in range(x2_l-w_x2,x2_l+w_x2)])))>0 and len(list(set([y for y in range(y1_l-h_y1,y1_l+h_y1)])&set([y for y in range(y2_l-h_y2,y2_l+h_y2)])))>0:
                     crs_list.append(1)
                 else:
                     crs_list.append(0)
                 if len(crs_list)>2:
                     crs_list.pop(0)
-                if len(crs_list)==2 and crs_list[0]==1 and crs_list[1]==0:
+                if crs_list[0]==1 and crs_list[1]==0:
                     collisions+=1
 
 
@@ -165,7 +165,6 @@ def process_video():
         if cv2.waitKey(1) == 27:
             print(predict_collis)
             break #ESC чтобы перестало работать
-        if predict_collis == True: break
             
     cap.release()
     out.release()
